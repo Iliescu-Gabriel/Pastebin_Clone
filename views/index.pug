@@ -1,0 +1,45 @@
+extends layout
+
+block content
+    //- Pastes form part
+    - const formStyle = {"width": "500px", "margin": "auto"}  
+
+    form(action='/' method='post' style = formStyle class='card text-center')
+      section.card-body
+        h5 Paste title
+        input(value='' type = "text" name = "pasteTitle" placeholder = "pasteTitle" class='form-control ')   
+        br
+        h5 Text:
+        textarea(value='' name = "pasteText"  placeholder = "pasteText" style = {"height" : "100px"} class='form-control')
+      section.card-footer 
+        button(type = "submit" value='Submit' class='btn btn-primary').
+          Submit
+      if(pasteDeleteError)
+        p THE PASTE THAT YOU WANT TO DELETE WAS NOT FOUND!
+      if(addPasteSuccess)
+        p The paste was added succesfully!
+      if(deletePasteSuccess)
+        p The paste was deleted succesfully!
+    br
+    br
+    //- Show pastes part
+    article(style = {"margin": "auto"} class='card col-lg-10')
+      section.card-header.text-center
+        h5 Entries
+      section.card-body
+        div(class="row") 
+          each paste in pastes
+            section(class="col-lg-3 mb-4")
+              div(class="card")
+                div(class="card-header" style="text-align:center")
+                  h5= paste.pasteTitle
+                div(class="card-body")
+                  h5= paste.pasteText
+              div(class="text-center container")
+                <!-- edit link button-->
+                form(action="/G"+paste._id, method="get" class='row')
+                  input(type="submit" class="btn btn-primary" value='edit')
+                form(action="/D"+paste._id, method="get" class='row')
+                  input(type="submit" value='DELETE' class="btn btn-danger")
+          else 
+            p No pastes found!
